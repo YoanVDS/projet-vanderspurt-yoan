@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Address } from './app/address';
 import { User } from './app/user.state.model';
 import { environment } from './environments/environment';
 
@@ -14,16 +15,26 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   public postUser(user: User){
-    return this.httpClient.post<String>(environment.apiUrl+"/user",{
+    return this.httpClient.post<string>(environment.apiUrl+"/user",{
       login: user.nickname,
       password: user.password,
       email: user.email,
       gender: user.gender,
       phone: user.phoneNumber,
       lastname: user.lastName,
-      firstname: user.firstName,
-      postaladdress: user.postalAddress.toString(),
-      billingaddress: user.billingAddress.toString()
+      firstname: user.firstName
+    });
+  }
+
+  public postAddress(clientid: number, address: Address, type: string){
+    alert("dans la func");
+    return this.httpClient.post<string>(environment.apiUrl+"/newaddress",{
+      clientid,
+      address: address.address,
+      zip: address.zip,
+      city: address.city,
+      country: address.country,
+      type
     });
   }
 

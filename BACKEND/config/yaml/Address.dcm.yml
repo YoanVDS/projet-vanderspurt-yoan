@@ -1,0 +1,53 @@
+Address:
+    type: entity
+    table: address
+    indexes:
+        IDX_D4E6F817F98CD1C:
+            columns:
+                - clientid
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        address:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        zip:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+        city:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        country:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+    manyToOne:
+        clientid:
+            targetEntity: Client
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                clientid:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

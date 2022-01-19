@@ -1,6 +1,4 @@
-import { Store } from "@ngxs/store";
 import { Address } from "./address"
-import { BasketState } from "./basket.state";
 
 export class UserStateModel{
     users: User[];
@@ -19,5 +17,6 @@ export class User{
         public firstName: string,
         public lastName: string,
         public phoneNumber: string,
+        public bddId: number
     ){};
 }

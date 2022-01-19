@@ -54,7 +54,65 @@ $app->get('/hello/{login}', function (Request $request, Response $response, $arg
     $response = addHeaders($response, $response->getHeaders('Origin'));
     //$token_jwt = createJWT();
     return $response;
-    });
+});
+
+$app->options('/user', function (Request $request, Response $response, $args) {
+
+    // Evite que le front demande une confirmation à chaque modification
+    $response = $response->withHeader("Access-Control-Max-Age", 600);
+
+    return addHeaders ($response);
+});
+
+$app->options('/newaddress', function (Request $request, Response $response, $args) {
+
+    // Evite que le front demande une confirmation à chaque modification
+    $response = $response->withHeader("Access-Control-Max-Age", 600);
+
+    return addHeaders ($response);
+});
+
+$app->post('/newaddress', function (Request $request, Response $response, $args) use ($entityManager){
+    $postVars = $request->getBody();
+    $data = json_decode($postVars, true);
+
+    $utilisateurRepository = $entityManager->getRepository('Client');
+    $utilisateur = $utilisateurRepository->findOneBy(array('id' => $data['clientid']));
+
+    $clientid = $utilisateur;
+    $address_address = $data['address'];
+    $zip = $data['zip'];
+    $city = $data['city'];
+    $country = $data['country'];
+    $type = $data['type'];
+
+    $address = new Address();
+    $address->setAddress($address_address);
+    $address->setZip($zip);
+    $address->setCity($city);
+    $address->setCountry($country);
+    $address->setClientid($clientid);
+
+    $entityManager->persist($address);
+    $entityManager->flush();
+
+    
+
+    if($utilisateur and $type){
+        if($type == "billing"){
+            $utilisateur->setBillingaddressid($address);
+        }
+        else if($type == "postal"){
+            $utilisateur->setPostaladdressid($address);
+        }
+        $entityManager->persist($utilisateur);
+        $entityManager->flush();
+    }
+    $response = addHeaders($response);
+    $response = createJWT($response);
+
+    return $response;
+});
 
 $app->post('/user', function (Request $request, Response $response, $args) use ($entityManager){
     $postVars = $request->getBody();
@@ -66,8 +124,6 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     $email = $data['email'];
     $gender = $data['gender'];
     $phone = $data['phone'];
-    $postaladdress = $data['postaladdress'];
-    $billingaddress = $data['billingaddress'];
     
     $client = new Client();
     $client->setLogin($login);
@@ -77,8 +133,6 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     $client->setEmail($email);
     $client->setGender($gender);
     $client->setPhone($phone);
-    $client->setBillingaddress($billingaddress);
-    $client->setPostaladdress($postaladdress);
 
     $entityManager->persist($client);
     $entityManager->flush();
@@ -86,20 +140,14 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     $response = addHeaders($response);
     $response = createJWT($response);
 
-    $response->getBody()->write($login);
-    $response->getBody()->write(" - ");
-    $response->getBody()->write($pass);
+    $clientidstr = "clientid=" . $client->getId();
+    $clientidarr = [];
+    parse_str($clientidstr, $clientidarr);
+
+    $response->getBody()->write($clientidarr['clientid']);
     
     return $response;
-    });
-
-$app->options('/user', function (Request $request, Response $response, $args) {
-
-        // Evite que le front demande une confirmation à chaque modification
-        $response = $response->withHeader("Access-Control-Max-Age", 600);
-    
-        return addHeaders ($response);
-    });
+});
 
 // APi d'authentification générant un JWT
 $app->post('/login', function (Request $request, Response $response, $args) use ($entityManager){
@@ -127,9 +175,8 @@ $app->post('/login', function (Request $request, Response $response, $args) use 
                           'firstName' => $utilisateur->getFirstname(),
                           'email' => $utilisateur->getEmail(),
                           'gender' => $utilisateur->getGender(),
-                          'phoneNumber' => $utilisateur->getPhone());
-                          //'postaladdress' => $utilisateur->getPostaladdress(),
-                          //'billingaddress' => $utilisateur->getBillingaddress());
+                          'phoneNumber' => $utilisateur->getPhone(),
+                          'bddId' => $utilisateur->getId());
             $response->getBody()->write(json_encode($data,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         } else {
             $response = $response->withStatus(401);
@@ -139,14 +186,6 @@ $app->post('/login', function (Request $request, Response $response, $args) use 
     }
 
     return $response;
-});
-
-$app->options('/login', function (Request $request, Response $response, $args) {
-
-    // Evite que le front demande une confirmation à chaque modification
-    $response = $response->withHeader("Access-Control-Max-Age", 600);
-
-    return addHeaders ($response);
 });
 
 $app->add(new Tuupola\Middleware\JwtAuthentication($options));

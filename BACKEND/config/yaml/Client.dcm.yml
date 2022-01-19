@@ -1,6 +1,13 @@
 Client:
     type: entity
     table: client
+    indexes:
+        IDX_C7440455D7904E20:
+            columns:
+                - postaladdressid
+        IDX_C744045576B09341:
+            columns:
+                - billingaddressid
     id:
         id:
             type: integer
@@ -53,16 +60,25 @@ Client:
             length: 20
             options:
                 fixed: false
-        postaladdress:
-            type: string
-            nullable: true
-            length: 100
-            options:
-                fixed: false
-        billingaddress:
-            type: string
-            nullable: true
-            length: 100
-            options:
-                fixed: false
+    manyToOne:
+        postaladdressid:
+            targetEntity: Address
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                postaladdressid:
+                    referencedColumnName: id
+            orphanRemoval: false
+        billingaddressid:
+            targetEntity: Address
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                billingaddressid:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

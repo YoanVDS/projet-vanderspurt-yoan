@@ -311,4 +311,72 @@ class Client
     {
         return $this->billingaddress;
     }
+    /**
+     * @var \Address
+     *
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="postaladdressid", referencedColumnName="id")
+     * })
+     */
+    private $postaladdressid;
+
+    /**
+     * @var \Address
+     *
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="billingaddressid", referencedColumnName="id")
+     * })
+     */
+    private $billingaddressid;
+
+
+    /**
+     * Set postaladdressid.
+     *
+     * @param \Address|null $postaladdressid
+     *
+     * @return Client
+     */
+    public function setPostaladdressid(\Address $postaladdressid = null)
+    {
+        $this->postaladdressid = $postaladdressid;
+
+        return $this;
+    }
+
+    /**
+     * Get postaladdressid.
+     *
+     * @return \Address|null
+     */
+    public function getPostaladdressid()
+    {
+        return $this->postaladdressid;
+    }
+
+    /**
+     * Set billingaddressid.
+     *
+     * @param \Address|null $billingaddressid
+     *
+     * @return Client
+     */
+    public function setBillingaddressid(\Address $billingaddressid = null)
+    {
+        $this->billingaddressid = $billingaddressid;
+
+        return $this;
+    }
+
+    /**
+     * Get billingaddressid.
+     *
+     * @return \Address|null
+     */
+    public function getBillingaddressid()
+    {
+        return $this->billingaddressid;
+    }
 }
