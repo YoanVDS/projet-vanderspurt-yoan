@@ -4,8 +4,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use \Firebase\JWT\JWT;
-require __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/bootstrap.php';
+require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $app = AppFactory::create();
 
@@ -51,7 +51,7 @@ function createJWT(Response $response): Response{
 
 $app->get('/hello/{login}', function (Request $request, Response $response, $args) {
     $response->getBody()->write($args['login']);
-$response = addHeaders($response, $response->getHeaders('Origin'));
+    $response = addHeaders($response, $response->getHeaders('Origin'));
     //$token_jwt = createJWT();
     return $response;
     });
@@ -61,10 +61,25 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     $data = json_decode($postVars, true);
     $login = $data['login'];
     $pass = $data['password'];
+    $lastname = $data['lastname'];
+    $firstname = $data['firstname'];
+    $email = $data['email'];
+    $gender = $data['gender'];
+    $phone = $data['phone'];
+    $postaladdress = $data['postaladdress'];
+    $billingaddress = $data['billingaddress'];
     
     $client = new Client();
     $client->setLogin($login);
     $client->setPassword($pass);
+    $client->setLastname($lastname);
+    $client->setFirstname($firstname);
+    $client->setEmail($email);
+    $client->setGender($gender);
+    $client->setPhone($phone);
+    $client->setBillingaddress($billingaddress);
+    $client->setPostaladdress($postaladdress);
+
     $entityManager->persist($client);
     $entityManager->flush();
 
@@ -78,7 +93,7 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     return $response;
     });
 
-    $app->options('/user', function (Request $request, Response $response, $args) {
+$app->options('/user', function (Request $request, Response $response, $args) {
 
         // Evite que le front demande une confirmation à chaque modification
         $response = $response->withHeader("Access-Control-Max-Age", 600);
@@ -87,12 +102,12 @@ $app->post('/user', function (Request $request, Response $response, $args) use (
     });
 
 // APi d'authentification générant un JWT
-$app->post('/login', function (Request $request, Response $response, $args) {
-    global $entityManager;
+$app->post('/login', function (Request $request, Response $response, $args) use ($entityManager){
     $err=false;
-    $body = $request->getParsedBody();
-    $login = $body ['login'] ?? "";
-    $pass = $body ['pass'] ?? "";
+    $postVars = $request->getBody();
+    $data = json_decode($postVars, true);
+    $login = $data ['login'] ?? "";
+    $pass = $data ['password'] ?? "";
 
     if (!preg_match("/[a-zA-Z0-9]{1,20}/",$login))   {
         $err = true;
@@ -103,11 +118,19 @@ $app->post('/login', function (Request $request, Response $response, $args) {
     if (!$err) {
         $utilisateurRepository = $entityManager->getRepository('Client');
         $utilisateur = $utilisateurRepository->findOneBy(array('login' => $login, 'password' => $pass));
-        if ($utilisateur and $login == $utilisateur->getLogin() and $pass == $utilisateur->getPassword()) {
+        if ($utilisateur && $login == $utilisateur->getLogin() and $pass == $utilisateur->getPassword()) {
             $response = addHeaders ($response);
             $response = createJwT ($response);
-            $data = array('lastname' => $utilisateur->getLastname(), 'firstname' => $utilisateur->getFirstname());
-            $response->getBody()->write(json_encode($data));
+            $data = array('nickname' => $utilisateur->getLogin(), 
+                          'password' => $utilisateur->getPassword(),
+                          'lastname' => $utilisateur->getLastname(),
+                          'firstname' => $utilisateur->getFirstname(),
+                          'email' => $utilisateur->getEmail(),
+                          'gender' => $utilisateur->getGender(),
+                          'phone' => $utilisateur->getPhone());
+                          //'postaladdress' => $utilisateur->getPostaladdress(),
+                          //'billingaddress' => $utilisateur->getBillingaddress());
+            $response->getBody()->write(json_encode($data,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         } else {
             $response = $response->withStatus(401);
         }
@@ -116,6 +139,14 @@ $app->post('/login', function (Request $request, Response $response, $args) {
     }
 
     return $response;
+});
+
+$app->options('/login', function (Request $request, Response $response, $args) {
+
+    // Evite que le front demande une confirmation à chaque modification
+    $response = $response->withHeader("Access-Control-Max-Age", 600);
+
+    return addHeaders ($response);
 });
 
 $app->add(new Tuupola\Middleware\JwtAuthentication($options));

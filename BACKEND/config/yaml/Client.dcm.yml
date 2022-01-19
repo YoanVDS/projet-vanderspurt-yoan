@@ -35,4 +35,34 @@ Client:
             length: 256
             options:
                 fixed: false
+        email:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        gender:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+        phone:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        postaladdress:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        billingaddress:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
     lifecycleCallbacks: {  }

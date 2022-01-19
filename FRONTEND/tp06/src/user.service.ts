@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from './app/user.state.model';
@@ -13,26 +13,27 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public postUser(login: String, password: String){
+  public postUser(user: User){
     return this.httpClient.post<String>(environment.apiUrl+"/user",{
-      login: login,
-      password: password      
+      login: user.nickname,
+      password: user.password,
+      email: user.email,
+      gender: user.gender,
+      phone: user.phoneNumber,
+      lastname: user.lastName,
+      firstname: user.firstName,
+      postaladdress: user.postalAddress.toString(),
+      billingaddress: user.billingAddress.toString()
     });
   }
 
-  public login(login: String, password: String) : User {
-    let user;
-    this.httpClient.get<User>(environment.apiUrl + "/user/?login="+login+"&password="+password)
-          .toPromise().then(user_returned => user = user_returned);
-    if(user != null && (user as User).password != password){
-      this.WRONG_PASSWORD = true;
-      return null;
-    }
-    if(user == null){
-      this.WRONG_LOGIN = true;
-      return null;
-    }
-    //This logic may be refactored
-    return user;
+  public login(login: String, password: String){
+    let httpOptions = {
+      headers: new HttpHeaders({"Content-Type": "application/x-www-form-urlencoded"})
+    };
+    return this.httpClient.post<User>(environment.apiUrl + "/login",{
+        login,
+        password
+    },httpOptions);
   }
 }

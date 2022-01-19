@@ -156,4 +156,159 @@ class Client
     {
         return $this->password;
     }
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="email", type="string", length=50, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="gender", type="string", length=10, nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="phone", type="string", length=20, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="postaladdress", type="string", length=30, nullable=true)
+     */
+    private $postaladdress;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="billingaddress", type="string", length=30, nullable=true)
+     */
+    private $billingaddress;
+
+
+    /**
+     * Set email.
+     *
+     * @param string|null $email
+     *
+     * @return Client
+     */
+    public function setEmail($email = null)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set gender.
+     *
+     * @param string|null $gender
+     *
+     * @return Client
+     */
+    public function setGender($gender = null)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender.
+     *
+     * @return string|null
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set phone.
+     *
+     * @param string|null $phone
+     *
+     * @return Client
+     */
+    public function setPhone($phone = null)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone.
+     *
+     * @return string|null
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set postaladdress.
+     *
+     * @param string|null $postaladdress
+     *
+     * @return Client
+     */
+    public function setPostaladdress($postaladdress = null)
+    {
+        $this->postaladdress = $postaladdress;
+
+        return $this;
+    }
+
+    /**
+     * Get postaladdress.
+     *
+     * @return string|null
+     */
+    public function getPostaladdress()
+    {
+        return $this->postaladdress;
+    }
+
+    /**
+     * Set billingaddress.
+     *
+     * @param string|null $billingaddress
+     *
+     * @return Client
+     */
+    public function setBillingaddress($billingaddress = null)
+    {
+        $this->billingaddress = $billingaddress;
+
+        return $this;
+    }
+
+    /**
+     * Get billingaddress.
+     *
+     * @return string|null
+     */
+    public function getBillingaddress()
+    {
+        return $this->billingaddress;
+    }
 }

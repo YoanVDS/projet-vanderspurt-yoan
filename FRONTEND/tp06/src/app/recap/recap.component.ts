@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { UserService } from 'src/user.service';
 import { Address } from '../address';
 import { BasketState } from '../basket.state';
 import { AddUser, SetLoggedUser } from '../user.action';
@@ -26,7 +27,7 @@ export class RecapComponent implements OnInit {
   @Input() login: string = "";
   @Input() country: string = "";
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private userService: UserService) { }
 
   @Select(UserState.GetLoggedUserNick) loggedUser$: Observable<string>;
 
@@ -35,7 +36,8 @@ export class RecapComponent implements OnInit {
 
   addUser(): void {
     const postalAddress = new Address(this.address, this.city, this.zip,  this.country);
-    const user = new User(this.login,this.password,[postalAddress],postalAddress,null,this.email,this.gender,this.firstName,this.lastName,this.tel);
+    const user = new User(this.login,this.password,[postalAddress],postalAddress,postalAddress,this.email,this.gender,this.firstName,this.lastName,this.tel);
+    this.userService.postUser(user).toPromise().then(result => alert("User added to database successfully"));
     this.store.dispatch(new AddUser(user));
     this.store.dispatch(new SetLoggedUser(user));
     this.loggedUser$.subscribe(

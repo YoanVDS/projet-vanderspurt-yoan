@@ -11,7 +11,7 @@ import { PhonePipe } from '../phone.pipe';
 })
 export class FormComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor() { }
 
   lastName: string = "";
   firstName: string = "";
@@ -60,7 +60,6 @@ export class FormComponent implements OnInit {
   }
   onSubmit () {
     this.validated = true;
-    this.userService.postUser(this.login, this.password).toPromise().then(result => alert(result));
     }
 
   ngOnInit(): void {

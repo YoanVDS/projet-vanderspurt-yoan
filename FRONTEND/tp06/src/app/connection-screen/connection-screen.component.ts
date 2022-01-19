@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { UserService } from 'src/user.service';
+import { AddUser, SetLoggedUser } from '../user.action';
+import { UserState } from '../user.state';
+import { User } from '../user.state.model';
 
 @Component({
   selector: 'app-connection-screen',
@@ -8,7 +13,7 @@ import { UserService } from 'src/user.service';
 })
 export class ConnectionScreenComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private store: Store, private userService: UserService) { }
 
   login: string = "";
   password: string = "";
@@ -17,19 +22,19 @@ export class ConnectionScreenComponent implements OnInit {
   validLogin: boolean = true;
   validPassword: boolean = true;
 
+  @Select(UserState.GetLoggedUserNick) loggedUser$: Observable<string>;
+
   ngOnInit() {
   }
 
   onSubmit (){
-    if(this.userService.login(this.login,this.password) == null){
-      if(this.userService.WRONG_LOGIN) this.validLogin = false;
-      else if(this.userService.WRONG_PASSWORD) this.validPassword = false;
-    }
-    else{
-      this.validPassword = true;
-      this.validLogin = true;
-      alert("Bon retour " + this.login + "!");
-    }
+    this.userService.login(this.login,this.password).subscribe((user)=>{
+      this.store.dispatch(new AddUser(user));
+      this.store.dispatch(new SetLoggedUser(user));
+      this.loggedUser$.subscribe(
+        value => { alert("Bienvenue "+ value +"!");}
+      );
+    }, (error) => { alert("Utilisateur non reconnu")});
   }
 
 }
