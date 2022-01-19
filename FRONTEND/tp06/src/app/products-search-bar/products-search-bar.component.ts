@@ -48,7 +48,7 @@ export class ProductsSearchBarComponent implements OnInit {
             newList = this.productsService.getProducts().toPromise()
               .then(list => list.filter(product => product.price <= 100));
             break;
-        case "less100Search":
+        case "more100Search":
             newList = this.productsService.getProducts().toPromise()
               .then(list => list.filter(product => product.price > 100));
             break;
