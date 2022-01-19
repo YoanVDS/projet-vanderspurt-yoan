@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { pipe } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { Observable, pipe } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UserService } from 'src/user.service';
 import { PhonePipe } from '../phone.pipe';
+import { UserState } from '../user.state';
+import { User } from '../user.state.model';
 
 @Component({
   selector: 'app-form',
@@ -11,7 +14,22 @@ import { PhonePipe } from '../phone.pipe';
 })
 export class FormComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.loggedUser$.subscribe((value) =>{
+      this.lastName = value.lastName;
+      this.firstName = value.firstName;
+      this.tel = value.phoneNumber;
+      this.email = value.email;
+      this.gender = value.gender;
+      this.password = value.password;
+      this.login = value.nickname;
+      this.validateEmail();
+      this.validatePassword();
+      this.validatePhone();
+    } );
+   }
+
+  @Select(UserState.GetLoggedUser) loggedUser$: Observable<User>;
 
   lastName: string = "";
   firstName: string = "";
@@ -60,7 +78,7 @@ export class FormComponent implements OnInit {
   }
   onSubmit () {
     this.validated = true;
-    }
+  }
 
   ngOnInit(): void {
   }

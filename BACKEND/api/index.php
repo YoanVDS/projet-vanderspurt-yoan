@@ -123,11 +123,11 @@ $app->post('/login', function (Request $request, Response $response, $args) use 
             $response = createJwT ($response);
             $data = array('nickname' => $utilisateur->getLogin(), 
                           'password' => $utilisateur->getPassword(),
-                          'lastname' => $utilisateur->getLastname(),
-                          'firstname' => $utilisateur->getFirstname(),
+                          'lastName' => $utilisateur->getLastname(),
+                          'firstName' => $utilisateur->getFirstname(),
                           'email' => $utilisateur->getEmail(),
                           'gender' => $utilisateur->getGender(),
-                          'phone' => $utilisateur->getPhone());
+                          'phoneNumber' => $utilisateur->getPhone());
                           //'postaladdress' => $utilisateur->getPostaladdress(),
                           //'billingaddress' => $utilisateur->getBillingaddress());
             $response->getBody()->write(json_encode($data,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
