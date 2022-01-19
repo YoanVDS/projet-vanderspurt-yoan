@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/user.service';
+import { Address } from '../address';
 import { AddUser, SetLoggedUser } from '../user.action';
 import { UserState } from '../user.state';
 import { User } from '../user.state.model';
@@ -29,10 +30,19 @@ export class ConnectionScreenComponent implements OnInit {
 
   onSubmit (){
     this.userService.login(this.login,this.password).subscribe((user)=>{
+      this.userService.getAddress(user.bddId, 'postal').subscribe((address =>{
+        user.postalAddress = address;
+        user.addresses = new Array<Address>();
+        user.addresses.push(address);
+      }));
+      this.userService.getAddress(user.bddId, 'billing').subscribe((address =>{
+        user.billingAddress = address;
+        if(!user.addresses.includes(address)) user.addresses.push(address);
+      }));
       this.store.dispatch(new AddUser(user));
       this.store.dispatch(new SetLoggedUser(user));
       this.loggedUser$.subscribe(
-        value => { alert("Bienvenue "+ value +"!");}
+        value => { alert("Bonjour "+ value +"!");}
       );
     }, (error) => { alert("Utilisateur non reconnu")});
   }

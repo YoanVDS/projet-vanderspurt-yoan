@@ -6,7 +6,7 @@
     </div>
     <div class="form-group">
         <label for="pass">Mot de passe</label>
-        <input (change)="validatePassword()" type="password" class="form-control" [(ngModel)]="password" placeholder="Entrez votre mot de passe" required>
+        <input type="password" class="form-control" [(ngModel)]="password" placeholder="Entrez votre mot de passe" required>
         <div *ngIf="!validPassword" class="alert-div">{{errorPassword}}</div>
     </div>
     <button class="btn-submit"  (click)="onSubmit()"

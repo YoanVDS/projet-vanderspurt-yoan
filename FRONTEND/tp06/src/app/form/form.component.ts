@@ -23,6 +23,11 @@ export class FormComponent implements OnInit {
       this.gender = value.gender;
       this.password = value.password;
       this.login = value.nickname;
+      this.address = value.postalAddress.address;
+      this.city = value.postalAddress.city;
+      this.zip = value.postalAddress.zip;
+      this.country = value.postalAddress.country;
+
       this.validateEmail();
       this.validatePassword();
       this.validatePhone();

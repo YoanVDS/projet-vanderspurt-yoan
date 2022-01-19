@@ -40,7 +40,7 @@ export class RecapComponent implements OnInit {
     user.bddId = parseInt(await this.userService.postUser(user).toPromise().then(result => {
       return result;
     }));
-    alert("Resultat: " + user.bddId);
+    
     this.userService.postAddress(user.bddId, postalAddress, 'postal').subscribe();
     this.userService.postAddress(user.bddId, postalAddress, 'billing').subscribe();
     

@@ -26,8 +26,17 @@ export class UserService {
     });
   }
 
+  public login(login: String, password: String){
+    let httpOptions = {
+      headers: new HttpHeaders({"Content-Type": "application/x-www-form-urlencoded"})
+    };
+    return this.httpClient.post<User>(environment.apiUrl + "/login",{
+        login,
+        password
+    },httpOptions);
+  }
+
   public postAddress(clientid: number, address: Address, type: string){
-    alert("dans la func");
     return this.httpClient.post<string>(environment.apiUrl+"/newaddress",{
       clientid,
       address: address.address,
@@ -38,13 +47,10 @@ export class UserService {
     });
   }
 
-  public login(login: String, password: String){
-    let httpOptions = {
-      headers: new HttpHeaders({"Content-Type": "application/x-www-form-urlencoded"})
-    };
-    return this.httpClient.post<User>(environment.apiUrl + "/login",{
-        login,
-        password
-    },httpOptions);
+  public getAddress(clientid: number, type: string){
+    return this.httpClient.post<Address>(environment.apiUrl+"/getaddress",{
+      clientid,
+      type
+    });
   }
 }

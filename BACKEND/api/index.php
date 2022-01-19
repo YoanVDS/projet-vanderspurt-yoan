@@ -72,6 +72,14 @@ $app->options('/newaddress', function (Request $request, Response $response, $ar
     return addHeaders ($response);
 });
 
+$app->options('/getaddress', function (Request $request, Response $response, $args) {
+
+    // Evite que le front demande une confirmation à chaque modification
+    $response = $response->withHeader("Access-Control-Max-Age", 600);
+
+    return addHeaders ($response);
+});
+
 $app->post('/newaddress', function (Request $request, Response $response, $args) use ($entityManager){
     $postVars = $request->getBody();
     $data = json_decode($postVars, true);
@@ -114,9 +122,37 @@ $app->post('/newaddress', function (Request $request, Response $response, $args)
     return $response;
 });
 
+$app->post('/getaddress', function (Request $request, Response $response, $args) use ($entityManager){
+    $postVars = $request->getBody();
+    $data = json_decode($postVars, true);
+
+    $utilisateurRepository = $entityManager->getRepository('Client');
+    $addressesRepository = $entityManager->getRepository('Address');
+    $utilisateur = $utilisateurRepository->findOneBy(array('id' => $data['clientid']));
+    
+    $type = $data['type'];
+    $response = addHeaders ($response);
+    $response = createJwT ($response);
+    if($type == 'postal'){
+        $address = $utilisateur->getPostaladdressid();
+    }
+    else if($type == 'billing'){
+        $address = $utilisateur->getBillingaddressid();
+    }
+    $data = array('address' => $address->getAddress(), 
+                    'city' => $address->getCity(),
+                    'zip' => $address->getZip(),
+                    'country' => $address->getCountry(),
+                    );
+    $response->getBody()->write(json_encode($data,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+
+    return $response;
+});
+
 $app->post('/user', function (Request $request, Response $response, $args) use ($entityManager){
     $postVars = $request->getBody();
     $data = json_decode($postVars, true);
+
     $login = $data['login'];
     $pass = $data['password'];
     $lastname = $data['lastname'];
