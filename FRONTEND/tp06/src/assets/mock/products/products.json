@@ -1,6 +1,6 @@
 [
-    { "ref": "x1", "label": "linux", "price": 10 },
-    { "ref": "x2", "label": "java", "price": 11 },
-    { "ref": "x3", "label": "anuglar", "price": 12 }
+    { "ref": "1", "label": "Programmation Linux", "price": 10, "description": "Tout savoir de la programmation bash, C etc!" },
+    { "ref": "2", "label": "Paradigme Java", "price": 11, "description": "Pour les étourdis du langage." },
+    { "ref": "3", "label": "Corrections des TPs de Web", "price": 10000, "description": "Toute aide a son prix." }
 ]
   
