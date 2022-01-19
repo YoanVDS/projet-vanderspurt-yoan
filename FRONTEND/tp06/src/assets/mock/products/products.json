@@ -1,0 +1,6 @@
+[
+    { "ref": "x1", "label": "linux", "price": 10 },
+    { "ref": "x2", "label": "java", "price": 11 },
+    { "ref": "x3", "label": "anuglar", "price": 12 }
+]
+  

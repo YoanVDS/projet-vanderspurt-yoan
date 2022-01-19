@@ -1,0 +1,100 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<div *ngIf="validated == false">
+    <div class="form-row" id="names">
+        <div class="form-group col">
+            <label for="gender">Civilité</label>
+            <select class="form-control" [(ngModel)]="gender">
+                <option>Madame</option>
+                <option>Monsieur</option>
+            </select>
+        </div>
+        <div class="form-group col">
+            <label for="firstName">Prénom</label>
+            <input type="text" class="form-control" [(ngModel)]="firstName" placeholder="Entrez votre prénom">
+        </div>
+        <div class="form-group col">
+            <label for="lastName">Nom</label>
+            <input type="text" class="form-control" [(ngModel)] = "lastName" placeholder="Entrez votre nom">
+        </div>
+    </div>
+    
+    <div class="form-row" id="personalAddress">
+        <div class="form-group col-md-4">
+            <label for="address">Adresse</label>
+            <input type="text" class="form-control" [(ngModel)]="address" placeholder="Entrez votre adresse">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="city">Ville</label>
+            <input type="text" class="form-control" [(ngModel)]="city" placeholder="Entrez votre ville">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="zip">Code postal</label>
+            <input type="text" class="form-control" [(ngModel)]="zip" placeholder="Entrez votre code postal">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="country">Pays</label>
+            <select class="form-control" [(ngModel)]="country">
+                <option>France</option>
+                <option>Royaume-Uni</option>
+                <option>Etats-Unis</option>
+                <option>Allemagne</option>
+            </select>
+            <div *ngIf="!country" class="alert-div" >Merci de saisir un pays.</div>
+        </div>
+        
+    </div>
+    
+    <div class="form-row" id="contact">
+        <div class="form-group col">
+            <label for="tel">Téléphone</label>
+            <input (change)="validatePhone()" type="tel" class="form-control" [(ngModel)]="tel" placeholder="Entrez votre téléphone sous la forme 0123456789">
+            <div *ngIf="!validPhone" class="alert-div" >Merci de saisir un numéro de téléphone sous le bon format.</div>
+        </div>
+        <div class="form-group col">
+            <label for="email">E-Mail</label>
+            <input (change)="validateEmail()" type="email" class="form-control" [(ngModel)]="email"  placeholder="Entrez votre E-Mail">
+            <div *ngIf="!validEmail" class="alert-div" >Merci de saisir une adresse email correcte.</div>
+        </div>
+        
+    </div>
+    
+    
+    <div class="form-group">
+        <label for="id">Identifiant</label>
+        <input type="text" class="form-control" [(ngModel)]="login" placeholder="Entrez votre identifiant" required>
+        <div *ngIf="!login" class="alert-div" >Merci de saisir un identifiant disponible.</div>
+    </div>
+    <div class="form-group">
+        <label for="pass">Mot de passe</label>
+        <input (change)="validatePassword()" type="password" class="form-control" [(ngModel)]="password" placeholder="Entrez votre mot de passe" required>
+        <div *ngIf="!validPassword" class="alert-div">{{errorPassword}}</div>
+    </div>
+    
+</div>
+<app-recap *ngIf="validated == true"
+            [lastName]="lastName"
+            [firstName]="firstName"
+            [address] ="address"
+            [zip] = "zip"
+            [city] = "city"
+            [tel] = "tel"
+            [email]= "email"
+            [gender] = "gender"
+            [password] = "password"
+            [login] = "login"
+            [country] ="country"></app-recap>
+
+
+
+<button class="btn-submit"  (click)="onSubmit()"
+        *ngIf="country 
+            && validPhone 
+            && validPassword
+            && validEmail
+            && login
+            && !validated">Valider</button>
+
+
+

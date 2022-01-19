@@ -1,0 +1,15 @@
+<div>
+    <div class="form-group" id="login">
+        <label for="login">Identifiant:</label>
+        <input type="text" class="form-control" [(ngModel)]="login" placeholder="Entrez votre identifiant.">
+        <div *ngIf="!validLogin" class="alert-div">{{errorLogin}}</div>
+    </div>
+    <div class="form-group">
+        <label for="pass">Mot de passe</label>
+        <input (change)="validatePassword()" type="password" class="form-control" [(ngModel)]="password" placeholder="Entrez votre mot de passe" required>
+        <div *ngIf="!validPassword" class="alert-div">{{errorPassword}}</div>
+    </div>
+    <button class="btn-submit"  (click)="onSubmit()"
+        *ngIf="password            
+            && login">Se connecter</button>
+</div>

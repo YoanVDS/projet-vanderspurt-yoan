@@ -1,0 +1,10 @@
+<h2>Products in basket:</h2>
+
+<ul *ngFor="let p of basketProducts$ | async">
+    <li>
+        <div>
+            Product <b>{{ p.ref }}</b>: <b>{{p.label}}</b>. Price: <b>{{ p.price }}</b>.
+        </div>
+        <button (click)="removeProduct(p)">Remove from basket</button>
+    </li>
+</ul>

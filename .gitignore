@@ -1,0 +1,6 @@
+build
+/FRONTEND/tp06/dist
+/FRONTEND/tp06/node_modules
+/BACKEND/vendor
+build.sh
+notes.txt

@@ -1,0 +1,15 @@
+<div>
+    <p>Nom : {{lastName}}</p>
+    <p>Prénom : {{firstName}}</p>
+    <p>Adresse : {{address}}</p>    
+    <p>Code postal : {{zip}}</p>
+    <p>Ville : {{city}}</p>
+    <p>Pays : {{country}}</p>
+    <p>Téléphone : {{ tel | phone : country}}</p>
+    <p>E-Mail : {{email}}</p>
+    <p>Civilité : {{gender}}</p>
+    <p>Identifiant : {{login}}</p>
+    <p>Mot de passe : {{password}}</p>
+</div>
+
+<button class="btn-submit"  (click)="addUser()">Valider ces informations</button>

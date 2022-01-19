@@ -1,0 +1,13 @@
+<ul *ngFor="let p of productsList$ | async">
+    <li>
+        <div>
+            <b>{{p.label}}</b>: <b>{{ p.price }}€</b>.
+        </div>
+        <button (click)="addProduct(p)">Ajouter au panier</button>
+        <button (click)="seeDetails(p)">Voir les détails</button>
+    </li>
+</ul>
+
+<app-product-details [(product)]="detailedProduct" *ngIf="detailedProduct"></app-product-details>
+
+
