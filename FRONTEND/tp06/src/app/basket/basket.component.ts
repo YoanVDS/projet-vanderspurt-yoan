@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { RemoveProduct } from '../basket.action';
+import { EmptyBasket, RemoveProduct } from '../basket.action';
 import { BasketState } from '../basket.state';
 import { Product } from '../product';
 
@@ -20,4 +20,6 @@ export class BasketComponent implements OnInit {
   @Select(BasketState.GetProducts) basketProducts$: Observable<Array<Product>>;
 
   removeProduct(product: Product) { this.store.dispatch(new RemoveProduct(product)); }; 
+
+  emptyBasket() { this.store.dispatch(new EmptyBasket()); alert("Merci pour votre achat!"); };
 }

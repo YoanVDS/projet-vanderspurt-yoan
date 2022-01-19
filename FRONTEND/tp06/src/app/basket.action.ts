@@ -13,3 +13,9 @@ export class RemoveProduct{
     constructor(public payload: Product){}
 
 }
+
+export class EmptyBasket{
+    static readonly type = '[Basket] Empty';
+
+    constructor(){}
+}

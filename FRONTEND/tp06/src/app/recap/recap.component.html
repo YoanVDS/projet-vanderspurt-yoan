@@ -12,4 +12,5 @@
     <p>Mot de passe : {{password}}</p>
 </div>
 
-<button class="btn-submit"  (click)="addUser()">Valider ces informations</button>
+<button *ngIf="!(loggedUser$ | async)" class="btn-submit"  (click)="addUser()">Valider ces informations</button>
+<button *ngIf="(loggedUser$ | async)" class="btn-submit"  (click)="updateUser()">Valider ces informations</button>

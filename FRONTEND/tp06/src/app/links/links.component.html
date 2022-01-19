@@ -1,6 +1,8 @@
 <a [routerLink]="['/']">Accueil</a> -
-<a [routerLink]="['/form']">S'enregistrer</a> -
-<a [routerLink]="['/login']">Se connecter</a> -
+<a *ngIf="!(loggedUser$ | async)" [routerLink]="['/form']">S'enregistrer</a>
+<a *ngIf="(loggedUser$ | async)" [routerLink]="['/form']">Modifier vos informations</a> -
+<a *ngIf="!(loggedUser$ | async)" [routerLink]="['/login']">Se connecter</a>
+<a *ngIf="(loggedUser$ | async)" [routerLink]="['/login']">Se connecter à un autre compte</a> -
 <a [routerLink]="['/list']">Produits disponibles</a> -
 <a [routerLink]="['/basket']">Panier</a> -
 <a [routerLink]="['/addresses']">Gestion des adresses</a>

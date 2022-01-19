@@ -1,7 +1,7 @@
 import { isNgTemplate } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store"
-import { AddProduct, RemoveProduct } from "./basket.action"
+import { AddProduct, EmptyBasket, RemoveProduct } from "./basket.action"
 import { BasketStateModel } from "./basket.state.model"
 
 @State<BasketStateModel>({
@@ -38,6 +38,14 @@ export class BasketState{
                 products: state.products.filter(
                     item => item.ref != payload.ref
                 )
+            })
+
+        }
+
+    @Action(EmptyBasket)
+        empty({getState, patchState}: StateContext<BasketStateModel>){
+            patchState({
+                products: []
             })
 
         }

@@ -51,4 +51,22 @@ export class RecapComponent implements OnInit {
       value => { alert("Bienvenue "+ value +"!");}
     );
   }
+
+  async updateUser(): Promise<void> {
+    const postalAddress = new Address(this.address, this.city, this.zip,  this.country);
+    const user = new User(this.login,this.password,[postalAddress],postalAddress,postalAddress,this.email,this.gender,this.firstName,this.lastName,this.tel,null);
+    user.bddId = parseInt(await this.userService.postUser(user).toPromise().then(result => {
+      return result;
+    }));
+    
+    this.userService.postAddress(user.bddId, postalAddress, 'postal').subscribe();
+    this.userService.postAddress(user.bddId, postalAddress, 'billing').subscribe();
+    
+    
+    this.store.dispatch(new AddUser(user));
+    this.store.dispatch(new SetLoggedUser(user));
+    this.loggedUser$.subscribe(
+      value => { alert("Informations mises à jour!"); }
+    );
+  }
 }

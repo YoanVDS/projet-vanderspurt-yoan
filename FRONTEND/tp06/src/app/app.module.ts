@@ -23,10 +23,6 @@ import { ConnectionScreenComponent } from './connection-screen/connection-screen
 
 const appRoutes: Routes = [
   {
-    path: '',
-    component: FormComponent
-  },
-  {
     path: 'login',
     component: ConnectionScreenComponent
   },

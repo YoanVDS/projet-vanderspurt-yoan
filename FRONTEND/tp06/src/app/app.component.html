@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <h1>ProductZz E-Shop</h1>
-<h2 *ngIf="!(loggedUser$ | async)">Merci de vous enregistrer ou <a [routerLink]="['/login']">vous connecter</a></h2>
+<h2 *ngIf="!(loggedUser$ | async)">Merci de <a [routerLink]="['/form']">vous enregistrer</a> ou <a [routerLink]="['/login']">vous connecter</a></h2>
 <app-links *ngIf="loggedUser$ | async"></app-links><br>
 <app-basket-header *ngIf="loggedUser$ | async"></app-basket-header>
 <router-outlet></router-outlet>
